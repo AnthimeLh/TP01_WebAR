@@ -2,53 +2,35 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>TP01 - Exercice 1 - Scène 3D A-Frame</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>TP01 - Exercice 2 - AR.js + marqueur Hiro</title>
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
 
-  <a-scene background="color: #ECECEC">
+  <!--
+    embedded : la scène s'intègre dans la page au lieu de prendre tout l'écran en mode VR
+    arjs : active AR.js, sourceType webcam = on utilise la caméra du téléphone/PC
+    vr-mode-ui désactivé : on n'a pas besoin du bouton "casque VR"
+  -->
+  <a-scene
+    embedded
+    arjs="sourceType: webcam; debugUIEnabled: false;"
+    vr-mode-ui="enabled: false">
 
-    <!-- Le plan qui sert de sol -->
-    <a-plane
-      position="0 0 0"
-      rotation="-90 0 0"
-      width="10"
-      height="10"
-      color="#7BC8A4">
-    </a-plane>
+    <!-- Tout ce qui est dans ce marker n'apparaît que si la caméra voit le motif Hiro -->
+    <a-marker preset="hiro">
+      <a-box
+        position="0 0.5 0"
+        color="#3B7CFF"
+        material="opacity: 0.6; transparent: true;"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+      </a-box>
+    </a-marker>
 
-    <!-- Boîte 1 : rouge -->
-    <a-box
-      position="-3 2 -2"
-      color="#FF3B3B"
-      width="1" height="1" depth="1">
-    </a-box>
-
-    <!-- Boîte 2 : verte -->
-    <a-box
-      position="0 2 -4"
-      color="#3BFF6E"
-      width="1" height="1" depth="1">
-    </a-box>
-
-    <!-- Boîte 3 : bleue -->
-    <a-box
-      position="3 2 -2"
-      color="#3B7CFF"
-      width="1" height="1" depth="1">
-    </a-box>
-
-    <!-- Lumières -->
-    <a-entity light="type: ambient; color: #BBB"></a-entity>
-    <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-1 2 1"></a-entity>
-
-    <!-- Caméra : hauteur 10, distance 15, orientée vers le centre du plan -->
-    <a-entity
-      camera
-      position="0 10 15"
-      rotation="-33.7 0 0">
-    </a-entity>
+    <!-- La "caméra" AR : elle ne se positionne pas manuellement, AR.js la pilote -->
+    <a-entity camera></a-entity>
 
   </a-scene>
 
