@@ -30,6 +30,16 @@
       </a-box>
     </a-marker>
 
+    <!-- Marker personnalisé : le .patt généré doit être présent dans /markers/ -->
+    <a-marker type="pattern" url="markers/custom.patt">
+      <a-sphere
+        position="0 0.5 0"
+        radius="0.5"
+        color="#FFD23B"
+        animation="property: position; to: 0 0.8 0; dir: alternate; loop: true; dur: 1000; easing: easeInOutSine">
+      </a-sphere>
+    </a-marker>
+
     <!-- La "caméra" AR, avec un curseur au centre de l'écran pour détecter les clics/taps -->
     <a-entity camera>
       <a-cursor
