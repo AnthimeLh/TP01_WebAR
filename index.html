@@ -22,17 +22,55 @@
     <!-- Tout ce qui est dans ce marker n'apparaît que si la caméra voit le motif Hiro -->
     <a-marker preset="hiro">
       <a-box
+        id="arBox"
         position="0 0.5 0"
         color="#3B7CFF"
         material="opacity: 0.6; transparent: true;"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+        animation__spin="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
       </a-box>
     </a-marker>
 
-    <!-- La "caméra" AR : elle ne se positionne pas manuellement, AR.js la pilote -->
-    <a-entity camera></a-entity>
+    <!-- La "caméra" AR, avec un curseur au centre de l'écran pour détecter les clics/taps -->
+    <a-entity camera>
+      <a-cursor
+        fuse="false"
+        color="#FFFFFF"
+        raycaster="objects: #arBox">
+      </a-cursor>
+    </a-entity>
 
   </a-scene>
+
+  <script>
+    // On attend que la page soit chargée pour être sûr que l'élément #arBox existe
+    window.addEventListener('load', function () {
+      const box = document.querySelector('#arBox');
+      const colors = ['#3B7CFF', '#FF3B3B', '#3BFF6E', '#FFD23B'];
+      let colorIndex = 0;
+
+      box.addEventListener('click', function () {
+        // 1. Changement de couleur : on passe à la couleur suivante dans la liste
+        colorIndex = (colorIndex + 1) % colors.length;
+        box.setAttribute('color', colors[colorIndex]);
+
+        // 2. Animation supplémentaire : la boîte tourne plus vite pendant 1 seconde
+        box.setAttribute('animation__spin', 'dur', 800);
+        setTimeout(function () {
+          box.setAttribute('animation__spin', 'dur', 4000);
+        }, 1000);
+
+        // 3. Petit effet d'échelle (pulse) au clic
+        box.setAttribute('animation__scale', {
+          property: 'scale',
+          from: '1 1 1',
+          to: '1.3 1.3 1.3',
+          dir: 'alternate',
+          dur: 200,
+          loop: 2
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
